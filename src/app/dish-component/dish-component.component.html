@@ -1,0 +1,19 @@
+<div class="card h-100" [ngStyle]="{'border-color': dishesService.borderColors.get(dish), 'border-width.px': dishesService.borderWidth.get(dish)}">
+  <div class="card-body">
+    <div class="name">
+      <h5 class="card-title">{{dish.name | uppercase}}</h5>
+      <h5>{{dish.price | number : '1.2-2'}} <i *ngIf="dishesService.getCurrency() === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.getCurrency() === 'euro'" class="fas fa-euro-sign"></i></h5>
+    </div>
+    <h6 class="card-subtitle">{{dish.cuisine | uppercase}}</h6>
+    <h6 class="card-subtitle">{{dish.type}}, {{dish.category}}</h6>
+    <p class="card-text">{{dish.description}}</p>
+  </div>
+  <div class="card-footer">
+    <div class="buttons">
+      <button (click)="decreaseChosen()" [disabled]="disable"><i class="fas fa-minus"></i></button>
+      <p [ngStyle]="{'background-color': color}">{{currQuantity}}</p>
+      <button *ngIf="plusShow" (click)="increaseChosen()"><i class="fas fa-plus"></i></button>
+    </div>
+    <button class="ms-auto" (click)="removeDish()">Usuń</button>
+  </div>
+</div>

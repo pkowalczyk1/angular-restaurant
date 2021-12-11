@@ -1,4 +1,4 @@
-<div class="card h-100" [ngStyle]="{'border-color': dishesService.borderColors.get(dish), 'border-width.px': dishesService.borderWidth.get(dish)}">
+<div class="card h-100" [ngClass]="{'max-price' : dish == dishesService.getMaxDish(), 'min-price' : dish == dishesService.getMinDish()}">
   <div class="card-body">
     <div class="name">
       <h5 class="card-title">{{dish.name | uppercase}}</h5>
@@ -11,7 +11,7 @@
   <div class="card-footer">
     <div class="buttons">
       <button (click)="decreaseChosen()" [disabled]="disable"><i class="fas fa-minus"></i></button>
-      <p [ngStyle]="{'background-color': color}">{{currQuantity}}</p>
+      <p [ngStyle]="{'background-color': color}">{{dishesService.getCurrQuantity(dish)}}</p>
       <button *ngIf="plusShow" (click)="increaseChosen()"><i class="fas fa-plus"></i></button>
     </div>
     <button class="ms-auto" (click)="removeDish()">Usuń</button>

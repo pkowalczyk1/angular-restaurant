@@ -33,3 +33,13 @@ button {
   justify-content: center;
   gap: 10px;
 }
+
+.min-price {
+  border-width: 5px;
+  border-color: red;
+}
+
+.max-price {
+  border-width: 5px;
+  border-color: green;
+}

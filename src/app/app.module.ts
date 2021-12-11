@@ -6,16 +6,20 @@ import { DishListComponent } from './dish-list/dish-list.component';
 import { DishesServiceService } from './dishesService/dishesService.service';
 import { DishComponentComponent } from './dish-component/dish-component.component';
 import { HeaderComponent } from './header/header.component';
+import { DishFormComponent } from './dish-form/dish-form.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
     DishListComponent,
     DishComponentComponent,
-    HeaderComponent
+    HeaderComponent,
+    DishFormComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ReactiveFormsModule
   ],
   providers: [DishesServiceService],
   bootstrap: [AppComponent]

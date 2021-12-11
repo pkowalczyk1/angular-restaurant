@@ -1,0 +1,39 @@
+<div class="row">
+  <form [formGroup]="dishForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Nazwa dania</label>
+      <input type="text" class="form-control" id="name" formControlName="name">
+    </div>
+    <div class="mb-3">
+      <label for="cuisine" class="form-label">Kuchnia</label>
+      <input type="text" class="form-control" id="cuisine" formControlName="cuisine">
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">Typ</label>
+      <input type="text" class="form-control" id="type" formControlName="type">
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Kategoria</label>
+      <input type="text" class="form-control" id="category" formControlName="category">
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Opis dania</label>
+      <textarea id="description" rows="4" class="form-control" formControlName="description"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="ingredients" class="form-label">Składniki</label>
+      <input type="text" class="form-control" id="ingredients" formControlName="ingredients">
+      <div class="form-text">Podaj po przecinku bez spacji między składnikami</div>
+    </div>
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Ilość</label>
+      <input type="text" class="form-control" id="quantity" formControlName="quantity">
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Cena</label>
+      <input type="text" class="form-control" id="price" formControlName="price">
+      <div class="form-text">Podaj w USD</div>
+    </div>
+    <button type="submit" [disabled]="!dishForm.valid" class="btn btn-primary">Dodaj</button>
+  </form>
+</div>

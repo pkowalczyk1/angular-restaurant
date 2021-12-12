@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let dish of dishes">
-      <app-dish-component [dish]="dish"></app-dish-component>
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let dish of (dishes | async)">
+      <app-dish-component [dish]="dish" (remove)="removeDish($event)"></app-dish-component>
     </div>
   </div>
   <div class="row add-form">

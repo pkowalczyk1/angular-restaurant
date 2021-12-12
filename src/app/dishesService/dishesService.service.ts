@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Dish } from '../dish';
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -89,8 +90,8 @@ export class DishesServiceService {
     return this.currency;
   }
 
-  getDishes(): Dish[] {
-    return this.dishes;
+  getDishes(): Observable<Dish[]> {
+    return of(this.dishes);
   }
 
   getMaxDish(): Dish {

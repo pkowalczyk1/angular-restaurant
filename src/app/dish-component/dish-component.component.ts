@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Dish} from "../dish";
 import {DishesServiceService} from "../dishesService/dishesService.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-dish-component',
@@ -9,14 +10,17 @@ import {DishesServiceService} from "../dishesService/dishesService.service";
 })
 export class DishComponentComponent implements OnInit {
   @Input() dish!: Dish;
+  @Output() remove: EventEmitter<Dish> = new EventEmitter<Dish>();
 
   plusShow: boolean = true;
   disable: boolean = true;
   dishesService: DishesServiceService;
+  dishes!: Observable<Dish[]>;
   color: string;
 
   constructor(dishesService: DishesServiceService) {
     this.dishesService = dishesService;
+    this.dishes = this.dishesService.getDishes();
     this.color = "transparent";
     if (this.dishesService.getCurrQuantity(this.dish) < 3) {
       this.color = "orange";
@@ -56,6 +60,6 @@ export class DishComponentComponent implements OnInit {
 
   removeDish(): void {
     this.dishesService.decreaseQuantity(this.dish.quantity - this.dishesService.getCurrQuantity(this.dish));
-    this.dishesService.remove(this.dish);
+    this.remove.emit(this.dish);
   }
 }

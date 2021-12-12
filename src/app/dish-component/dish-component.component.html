@@ -9,11 +9,12 @@
     <p class="card-text">{{dish.description}}</p>
   </div>
   <div class="card-footer">
+    <app-dish-rating></app-dish-rating>
     <div class="buttons">
       <button (click)="decreaseChosen()" [disabled]="disable"><i class="fas fa-minus"></i></button>
       <p [ngStyle]="{'background-color': color}">{{dishesService.getCurrQuantity(dish)}}</p>
       <button *ngIf="plusShow" (click)="increaseChosen()"><i class="fas fa-plus"></i></button>
     </div>
-    <button class="ms-auto" (click)="removeDish()">Usuń</button>
+    <button (click)="removeDish()">Usuń</button>
   </div>
 </div>

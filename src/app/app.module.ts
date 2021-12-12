@@ -8,6 +8,8 @@ import { DishComponentComponent } from './dish-component/dish-component.componen
 import { HeaderComponent } from './header/header.component';
 import { DishFormComponent } from './dish-form/dish-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { DishRatingComponent } from './dish-rating/dish-rating.component';
+import { DishesFilterPipe } from './dishes-filter/dishes-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import {ReactiveFormsModule} from "@angular/forms";
     DishListComponent,
     DishComponentComponent,
     HeaderComponent,
-    DishFormComponent
+    DishFormComponent,
+    DishRatingComponent,
+    DishesFilterPipe
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,16 @@
+.stars li {
+  list-style: none;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 4px;
+  color: #b9b9b9;
+}
+
+.highlight {
+  color: gold;
+}

@@ -1,0 +1,3 @@
+<div class="stars">
+  <li class="star-element" (click)="rate(star)" *ngFor="let star of stars" [ngClass]="{'highlight' : (star <= value)}"><i class="fas fa-star"></i></li>
+</div>

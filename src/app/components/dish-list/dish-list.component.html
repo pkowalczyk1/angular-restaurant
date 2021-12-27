@@ -1,0 +1,24 @@
+<div class="container">
+  <ng-container *ngIf="cartListObservable | async as cartList">
+    <div *ngIf="cartList.length != 0">
+      <h3>Koszyk</h3>
+      <app-dish-cart></app-dish-cart>
+    </div>
+  </ng-container>
+  <div class="row">
+    <div *ngIf="dishList.length != 0">
+      <h3>Filtruj dania</h3>
+      <app-filter-form></app-filter-form>
+    </div>
+  </div>
+  <div class="row">
+    <h3 *ngIf="dishList.length != 0">Lista dań</h3>
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let dish of dishList | dishesFilter : (filterTypes | async) : (filterMinPrice | async) : (filterMaxPrice | async) : (filterCategories | async) : (filterRating | async) : test">
+      <app-dish-component [dish]="dish" (remove)="removeDish($event)"></app-dish-component>
+    </div>
+  </div>
+  <div class="row add-form">
+    <h3>Dodaj danie</h3>
+    <app-dish-form (add)="addedDish()"></app-dish-form>
+  </div>
+</div>

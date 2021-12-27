@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Dish} from "../dish";
+import {Dish} from "../../dish";
+import {DishesServiceService} from "../../services/dishesService/dishesService.service";
 
 @Component({
   selector: 'app-dish-rating',
@@ -11,15 +12,18 @@ export class DishRatingComponent implements OnInit {
 
   stars: number[] = [1, 2, 3, 4, 5];
   value: number = 0;
-  hoverValue: number = 0;
+  dishesService: DishesServiceService;
 
 
-  constructor() { }
+  constructor(dishesService: DishesServiceService) {
+    this.dishesService = dishesService;
+  }
 
   ngOnInit(): void {
   }
 
   rate(star: number): void {
     this.value = star;
+    this.dishesService.changeRating(this.dish, star);
   }
 }

@@ -1,0 +1,13 @@
+.cart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.product {
+  text-align: start;
+}
+
+.price {
+  text-align: end;
+}

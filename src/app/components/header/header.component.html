@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="d-flex left align-items-center">
       <span class="navbar-brand mb-0 h1"><i class="fas fa-utensils" style="color: green; margin-right: 10px;"></i> My restaurant</span>
-      <h6 (click)="changeValue()">Zmień walutę</h6>
+      <h6 (click)="changeValue()" class="currency">Zmień walutę</h6>
     </div>
     <span [ngStyle]="dishesService.getTotalQuantity() <= 10? {'background-color': 'orange'} : {'background-color': 'blue'}" class="d-flex justify-content-center h4 total">Ilość dodanych dań: {{dishesService.getTotalQuantity()}}</span>
   </div>

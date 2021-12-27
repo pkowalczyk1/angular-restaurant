@@ -43,3 +43,10 @@ button {
   border-width: 5px;
   border-color: green;
 }
+
+@media screen and (max-width: 440px) {
+  .card-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

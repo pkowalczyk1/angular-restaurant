@@ -7,4 +7,6 @@ export interface Dish {
   quantity: number;
   description: string;
   price: number;
+  rating: number;
+  photos: string[];
 }

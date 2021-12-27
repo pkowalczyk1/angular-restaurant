@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DishesServiceService} from "../dishesService/dishesService.service";
+import {DishesServiceService} from "../../services/dishesService/dishesService.service";
 
 @Component({
   selector: 'app-dish-form',
@@ -8,6 +8,8 @@ import {DishesServiceService} from "../dishesService/dishesService.service";
   styleUrls: ['./dish-form.component.css']
 })
 export class DishFormComponent implements OnInit {
+  @Output() add: EventEmitter<void> = new EventEmitter<void>();
+
   dishForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     cuisine: new FormControl('', Validators.required),
@@ -16,7 +18,8 @@ export class DishFormComponent implements OnInit {
     ingredients: new FormControl('', Validators.required),
     quantity: new FormControl('', Validators.required),
     price: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required)
+    description: new FormControl('', Validators.required),
+    photos: new FormControl('', Validators.required)
   })
 
   dishesService: DishesServiceService;
@@ -29,6 +32,7 @@ export class DishFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.add.emit();
     this.dishesService.addDish(this.dishForm.value);
     this.dishForm.reset();
   }

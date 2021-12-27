@@ -1,0 +1,37 @@
+<form [formGroup]="form" (change)="formChanged()">
+  <div class="row justify-content-center">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+      <p>Typ dania</p>
+      <select multiple class="form-select" formControlName="type">
+        <option *ngFor="let type of types" [value]="type">{{type}}</option>
+      </select>
+      <button class="btn btn-primary" (click)="resetType()" style="margin-top: 10px;">Reset</button>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+      <p>Kategoria dania</p>
+      <select multiple class="form-select" formControlName="category">
+        <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+      </select>
+      <button class="btn btn-primary" (click)="resetCategory()" style="margin-top: 10px;">Reset</button>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+      <label for="min-price" class="form-label">Minimalna cena</label>
+      <div class="range">
+        <input type="range" class="form-range" id="min-price" step="0.01" [min]="minPriceVar * currencyRatio" [max]="maxPriceVar * currencyRatio" formControlName="priceLower">
+        <div id="min-price-val"></div>
+      </div>
+      <label for="max-price" class="form-label">Maksymalna cena</label>
+      <div class="range">
+        <input type="range" class="form-range" id="max-price" step="0.01" [min]="minPriceVar * currencyRatio" [max]="maxPriceVar * currencyRatio" formControlName="priceUpper">
+        <div id="max-price-val"></div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+      <p>Ocena</p>
+      <select multiple class="form-select" formControlName="rating">
+        <option *ngFor="let number of rating" [value]="number">{{number}}</option>
+      </select>
+      <button class="btn btn-primary" (click)="resetRating()" style="margin-top: 10px;">Reset</button>
+    </div>
+  </div>
+</form>

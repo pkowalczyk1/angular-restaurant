@@ -1,18 +1,20 @@
 <div class="card h-100" [ngClass]="{'max-price' : dish == dishesService.getMaxDish(), 'min-price' : dish == dishesService.getMinDish()}">
+  <img [src]="dish.photos[0]" class="card-img-top">
   <div class="card-body">
     <div class="name">
       <h5 class="card-title">{{dish.name | uppercase}}</h5>
-      <h5>{{dish.price | number : '1.2-2'}} <i *ngIf="dishesService.getCurrency() === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.getCurrency() === 'euro'" class="fas fa-euro-sign"></i></h5>
+      <h5>{{(dish.price * (currencyRatio | async)! | number : '1.2-2')}} <i *ngIf="dishesService.getCurrency() === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.getCurrency() === 'euro'" class="fas fa-euro-sign"></i></h5>
     </div>
     <h6 class="card-subtitle">{{dish.cuisine | uppercase}}</h6>
     <h6 class="card-subtitle">{{dish.type}}, {{dish.category}}</h6>
     <p class="card-text">{{dish.description}}</p>
   </div>
   <div class="card-footer">
-    <app-dish-rating></app-dish-rating>
+    <app-dish-rating [dish]="dish"></app-dish-rating>
     <div class="buttons">
       <button (click)="decreaseChosen()" [disabled]="disable"><i class="fas fa-minus"></i></button>
-      <p [ngStyle]="{'background-color': color}">{{dishesService.getCurrQuantity(dish)}}</p>
+      <p *ngIf="dishesService.getCurrQuantity(dish) != 0" [ngStyle]="{'background-color': color}">{{dishesService.getCurrQuantity(dish)}}</p>
+      <p *ngIf="dishesService.getCurrQuantity(dish) == 0" [ngStyle]="{'background-color': color}">Wyprzedane!</p>
       <button *ngIf="plusShow" (click)="increaseChosen()"><i class="fas fa-plus"></i></button>
     </div>
     <button (click)="removeDish()">Usuń</button>

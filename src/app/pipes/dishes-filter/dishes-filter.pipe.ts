@@ -1,13 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Dish} from "../dish";
+import {Dish} from "../../dish";
 
 @Pipe({
   name: 'dishesFilter'
 })
 export class DishesFilterPipe implements PipeTransform {
 
-  transform(dishes: Dish[] | null, type: string[], minPrice: number, maxPrice: number, category: string[], test: number): Dish[] {
-    console.log(dishes);
+  transform(dishes: Dish[] | null, type: string[] | null, minPrice: number | null, maxPrice: number | null, category: string[] | null, rating: number[] | null, test: number): Dish[] {
     if (!dishes) {
       return [];
     }
@@ -17,8 +16,8 @@ export class DishesFilterPipe implements PipeTransform {
     if (category) {
       dishes = dishes.filter(dish => category.includes(dish.category));
     }
-    dishes = dishes.filter(dish => dish.price <= maxPrice && dish.price >= minPrice);
+    // @ts-ignore
+    dishes = dishes.filter(dish => dish.price <= maxPrice && dish.price >= minPrice && rating.includes(dish.rating));
     return dishes;
   }
-
 }

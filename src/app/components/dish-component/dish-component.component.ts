@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Dish} from "../dish";
-import {DishesServiceService} from "../dishesService/dishesService.service";
-import {Observable} from "rxjs";
+import {Dish} from "../../dish";
+import {DishesServiceService} from "../../services/dishesService/dishesService.service";
+import {BehaviorSubject} from "rxjs";
+import {CartServiceService} from "../../services/cartService/cart-service.service";
 
 @Component({
   selector: 'app-dish-component',
@@ -15,16 +16,19 @@ export class DishComponentComponent implements OnInit {
   plusShow: boolean = true;
   disable: boolean = true;
   dishesService: DishesServiceService;
-  dishes!: Observable<Dish[]>;
+  cartService: CartServiceService;
+  currencyRatio!: BehaviorSubject<number>;
+  test!: number;
   color: string;
 
-  constructor(dishesService: DishesServiceService) {
+  constructor(dishesService: DishesServiceService, cartService: CartServiceService) {
     this.dishesService = dishesService;
-    this.dishes = this.dishesService.getDishes();
+    this.cartService = cartService;
     this.color = "transparent";
     if (this.dishesService.getCurrQuantity(this.dish) < 3) {
       this.color = "orange";
     }
+    this.currencyRatio = this.dishesService.currencyRatioObservable;
   }
 
   ngOnInit(): void {
@@ -42,6 +46,7 @@ export class DishComponentComponent implements OnInit {
       this.plusShow = false;
     }
     this.dishesService.increaseQuantity(1);
+    this.cartService.addDishToCart(this.dish, 1);
   }
 
   decreaseChosen(): void {
@@ -56,10 +61,12 @@ export class DishComponentComponent implements OnInit {
       this.disable = true;
     }
     this.dishesService.decreaseQuantity(1);
+    this.cartService.decreaseDishInCart(this.dish, 1);
   }
 
   removeDish(): void {
     this.dishesService.decreaseQuantity(this.dish.quantity - this.dishesService.getCurrQuantity(this.dish));
+    this.cartService.removeDishFromCart(this.dish);
     this.remove.emit(this.dish);
   }
 }

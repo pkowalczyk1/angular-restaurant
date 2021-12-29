@@ -1,0 +1,18 @@
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+p {
+  margin: 0;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+button {
+  background: transparent;
+  color: blue;
+  font-size: 15px;
+  border: none;
+}

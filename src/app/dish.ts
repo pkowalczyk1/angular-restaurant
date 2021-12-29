@@ -1,4 +1,7 @@
+import {Review} from "./review";
+
 export interface Dish {
+  id: number;
   name: string;
   cuisine: string;
   type: string;
@@ -9,4 +12,5 @@ export interface Dish {
   price: number;
   rating: number;
   photos: string[];
+  reviews: Review[];
 }

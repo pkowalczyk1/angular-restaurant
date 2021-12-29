@@ -1,24 +1,34 @@
 <div class="container">
-  <ng-container *ngIf="cartListObservable | async as cartList">
-    <div *ngIf="cartList.length != 0">
-      <h3>Koszyk</h3>
-      <app-dish-cart></app-dish-cart>
-    </div>
-  </ng-container>
-  <div class="row">
-    <div *ngIf="dishList.length != 0">
+  <div class="row justify-content-center">
+    <span [ngStyle]="dishesService.getTotalQuantity() <= 10? {'background-color': 'orange'} : {'background-color': 'blue'}" class="d-flex justify-content-center h4 total m-3">Ilość dodanych dań: {{dishesService.getTotalQuantity()}}</span>
+    <div *ngIf="dishesService.dishes.length != 0">
       <h3>Filtruj dania</h3>
       <app-filter-form></app-filter-form>
     </div>
   </div>
-  <div class="row">
-    <h3 *ngIf="dishList.length != 0">Lista dań</h3>
-    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let dish of dishList | dishesFilter : (filterTypes | async) : (filterMinPrice | async) : (filterMaxPrice | async) : (filterCategories | async) : (filterRating | async) : test">
-      <app-dish-component [dish]="dish" (remove)="removeDish($event)"></app-dish-component>
+  <div class="row mt-3">
+    <div class="text-and-input">
+      <h3 *ngIf="dishesService.dishes.length != 0">Lista dań</h3>
+      <div class="select">
+        <h6>Ilość elementów na stronie</h6>
+        <select (change)="changePerPage()" [formControl]="perPageSelect" class="form-select-sm">
+          <option value="3">3</option>
+          <option value="6">6</option>
+          <option value="10">10</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="row add-form">
-    <h3>Dodaj danie</h3>
-    <app-dish-form (add)="addedDish()"></app-dish-form>
+    <ng-container *ngIf="dishesService.dishes | dishesFilter : dishesService.filterTypes : dishesService.filterMinPrice : dishesService.filterMaxPrice : dishesService.filterCategories : dishesService.filterRating : test as dishList">
+      <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let index of createRange()">
+        <ng-container *ngIf="currPage * perPage + index < dishList.length">
+          <app-dish-component [dish]="dishList[currPage * perPage + index]" (remove)="removeDish($event)"></app-dish-component>
+        </ng-container>
+      </div>
+      <div class="buttons" *ngIf="dishList.length != 0">
+        <i *ngIf="currPage != 0" class="fas fa-chevron-left" (click)="previousPage()"></i>
+        <h6>{{currPage + 1}}</h6>
+        <i *ngIf="(currPage + 1) * perPage < dishList.length" class="fas fa-chevron-right" (click)="nextPage()"></i>
+      </div>
+    </ng-container>
   </div>
 </div>

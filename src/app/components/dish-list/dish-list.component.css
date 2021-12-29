@@ -7,3 +7,40 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.total {
+  width: 50%;
+  border-radius: 5px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+  font-size: 30px;
+  margin: 15px;
+}
+
+.buttons h6 {
+  font-size: 23px;
+  margin: 0;
+}
+
+.buttons i {
+  cursor: pointer;
+}
+
+.text-and-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.select {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+}

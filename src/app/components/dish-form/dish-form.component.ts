@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DishesServiceService} from "../../services/dishesService/dishesService.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dish-form',
@@ -9,6 +10,8 @@ import {DishesServiceService} from "../../services/dishesService/dishesService.s
 })
 export class DishFormComponent implements OnInit {
   @Output() add: EventEmitter<void> = new EventEmitter<void>();
+
+  router: Router;
 
   dishForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -24,8 +27,9 @@ export class DishFormComponent implements OnInit {
 
   dishesService: DishesServiceService;
 
-  constructor(dishesService: DishesServiceService) {
+  constructor(dishesService: DishesServiceService, router: Router) {
     this.dishesService = dishesService;
+    this.router = router;
   }
 
   ngOnInit(): void {
@@ -35,5 +39,6 @@ export class DishFormComponent implements OnInit {
     this.add.emit();
     this.dishesService.addDish(this.dishForm.value);
     this.dishForm.reset();
+    this.router.navigate(["/list"]);
   }
 }

@@ -1,24 +1,16 @@
 <div class="container">
+  <h3>Koszyk</h3>
   <div class="row justify-content-center">
-    <ng-container *ngIf="cartObservable | async as dishes">
-      <ng-container *ngIf="quantitiesObservable | async as quantities">
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 text-center">
-          <div *ngFor="let dish of dishes" class="cart">
-            <div class="product">{{dish.name | uppercase}} x{{quantities.get(dish)}}</div>
-            <ng-container *ngIf="totalPrices.get(dish) as price">
-              <ng-container *ngIf="currencyRatioObservable | async as ratio">
-                <div class="price">{{price * ratio | number : '1.2-2'}} <i *ngIf="(currency | async) == 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="(currency | async) == 'euro'" class="fas fa-euro-sign"></i></div>
-              </ng-container>
-            </ng-container>
-          </div>
-          <div class="cart">
-            <div class="product h6">SUMA</div>
-            <ng-container *ngIf="currencyRatioObservable | async as ratio">
-              <div class="price">{{sum * ratio | number : '1.2-2'}} <i *ngIf="(currency | async) == 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="(currency | async) == 'euro'" class="fas fa-euro-sign"></i></div>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
-    </ng-container>
+    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 text-center">
+      <h3 *ngIf="cartService.dishesInCart.length == 0">Koszyk jest pusty</h3>
+      <div *ngFor="let dish of cartService.dishesInCart" class="cart">
+        <div class="product">{{dish.name | uppercase}} x{{cartService.quantities.get(dish)}}</div>
+        <div class="price">{{cartService.totalPrices.get(dish)! * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
+      </div>
+      <div class="cart" *ngIf="cartService.dishesInCart.length != 0">
+        <div class="product h6">SUMA</div>
+        <div class="price">{{cartService.total * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
+      </div>
+    </div>
   </div>
 </div>

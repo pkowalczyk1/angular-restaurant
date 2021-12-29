@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="col justify-content-center align-items-center text-center">
+      <div class="images">
+        <i class="fas fa-chevron-left" (click)="prevPhoto()"></i>
+        <img [src]="dish.photos[index]" alt="" class="image mt-3">
+        <i class="fas fa-chevron-right" (click)="nextPhoto()"></i>
+      </div>
+      <div class="name mt-3">
+        <h5>{{dish.name | uppercase}}</h5>
+        <h5>{{dish.price * dishesService.currencyRatio | number : "1.2-2"}}  <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></h5>
+      </div>
+      <h6 class="mt-3">{{dish.category | uppercase}}</h6>
+      <h6 class="mt-3">{{dish.type | uppercase}}</h6>
+      <p class="mt-3">{{dish.description}}</p>
+      <h6 class="mt-3">Składniki</h6>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let ingredient of dish.ingredients">{{ingredient}}</li>
+      </ul>
+      <div class="rating-add-remove mt-3">
+        <p class="m-0">Ocena: {{dish.rating}}/5</p>
+        <app-dish-rating [dish]="dish"></app-dish-rating>
+        <app-dish-buy [dish]="dish"></app-dish-buy>
+      </div>
+      <a routerLink="/list" routerLinkActive="active" class="btn btn-primary mt-3">Wróć do listy</a>
+      <h5 class="mt-3">Dodaj recenzję</h5>
+      <form class="mt-3" [formGroup]="reviewForm" (ngSubmit)="formSubmit()">
+        <h6 *ngIf="errors.length != 0" class="text-danger">Błędy:</h6>
+        <p *ngFor="let error of errors" class="text-danger">{{error}}</p>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-5">
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text">Nick</span>
+              <input type="text" class="form-control" formControlName="nick">
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text">Tytuł</span>
+              <input type="text" class="form-control" formControlName="title">
+            </div>
+          </div>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text">Treść</span>
+          <textarea class="form-control" rows="6" formControlName="text"></textarea>
+        </div>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-5">
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text">Data zakupu (niewymagane)</span>
+              <input type="date" class="form-control" formControlName="date">
+            </div>
+          </div>
+          <div class="col-5">
+            <button type="submit" class="btn btn-primary">Wyślij</button>
+          </div>
+        </div>
+      </form>
+      <div class="justify-content-center align-items-center mb-5">
+        <h5 *ngIf="dish.reviews.length != 0">Dodane recenzje</h5>
+        <div class="card" style="width: 100%;" *ngFor="let review of dish.reviews">
+          <div class="card-body">
+            <h5 class="card-title">{{review.title}}</h5>
+            <div class="nick-and-date">
+              <h6 class="card-subtitle mb-2">{{review.owner}}</h6>
+              <h6 class="card-subtitle mb-2">Data zakupu dania: {{review.date}}</h6>
+            </div>
+            <p class="card-text">{{review.text}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

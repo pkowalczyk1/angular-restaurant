@@ -12,7 +12,20 @@ import { DishRatingComponent } from './components/dish-rating/dish-rating.compon
 import { DishesFilterPipe } from './pipes/dishes-filter/dishes-filter.pipe';
 import { FilterFormComponent } from './components/filter-form/filter-form.component';
 import { DishCartComponent } from './components/dish-cart/dish-cart.component';
-import {CartServiceService} from "./services/cartService/cart-service.service";
+import { CartServiceService } from "./services/cartService/cart-service.service";
+import { RouterModule, Routes } from '@angular/router';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { DishDetailsComponent } from './components/dish-details/dish-details.component';
+import { DishBuyComponent } from './components/dish-buy/dish-buy.component';
+
+const routes: Routes = [
+  {path: "home", component: HomePageComponent},
+  {path: "list", component: DishListComponent},
+  {path: "cart", component: DishCartComponent},
+  {path: "add", component: DishFormComponent},
+  {path: "details/:id", component: DishDetailsComponent},
+  {path: "", redirectTo: "/home", pathMatch: "full"},
+];
 
 @NgModule({
   declarations: [
@@ -24,11 +37,15 @@ import {CartServiceService} from "./services/cartService/cart-service.service";
     DishRatingComponent,
     DishesFilterPipe,
     FilterFormComponent,
-    DishCartComponent
+    DishCartComponent,
+    HomePageComponent,
+    DishDetailsComponent,
+    DishBuyComponent
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [DishesServiceService, CartServiceService],
   bootstrap: [AppComponent]

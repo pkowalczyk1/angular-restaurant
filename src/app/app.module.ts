@@ -7,7 +7,7 @@ import { DishesServiceService } from './services/dishesService/dishesService.ser
 import { DishComponentComponent } from './components/dish-component/dish-component.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DishFormComponent } from './components/dish-form/dish-form.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { DishRatingComponent } from './components/dish-rating/dish-rating.component';
 import { DishesFilterPipe } from './pipes/dishes-filter/dishes-filter.pipe';
 import { FilterFormComponent } from './components/filter-form/filter-form.component';

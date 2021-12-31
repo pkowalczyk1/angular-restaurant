@@ -21,7 +21,7 @@ export class DishFormComponent implements OnInit {
     price: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     photos: new FormControl('', Validators.required)
-  })
+  });
 
   constructor(private dishesService: DishesServiceService, private router: Router) { }
 

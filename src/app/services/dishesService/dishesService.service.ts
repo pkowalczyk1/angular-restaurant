@@ -11,7 +11,6 @@ export class DishesServiceService {
   db: any;
   data: Observable<Dish[]>;
   totalQuantity: number = 0;
-  // currQuantities: Map<string, number> = new Map<string, number>();
   currQuantity: Map<string, number> = new Map<string, number>();
   currency: string = "dollar";
   currencyRatio: number = 1;
@@ -24,13 +23,10 @@ export class DishesServiceService {
   constructor(db: AngularFirestore) {
     this.db = db;
     this.data = this.db.collection("dishes").valueChanges({idField: "id"});
-    this.data.subscribe(value => {
-      for (let dish of value) {
-        if (this.currQuantity.get(dish.id) == null) {
-          this.currQuantity.set(dish.id, 0);
-        }
-      }
-    });
+  }
+
+  getData(): Observable<Dish[]> {
+    return this.data;
   }
 
   increaseQuantity(i: number): void {
@@ -82,6 +78,12 @@ export class DishesServiceService {
     this.currQuantity.set(dish.id, tmp + 1);
   }
 
+  setCurrQuantity(dish: Dish): void {
+    if (this.currQuantity.get(dish.id) == undefined) {
+      this.currQuantity.set(dish.id, 0);
+    }
+  }
+
   changeCurrency(): void {
     if (this.currencyRatio == 1) {
       this.currencyRatio = 0.88;
@@ -114,8 +116,7 @@ export class DishesServiceService {
     return this.currQuantity.get(dish.id);
   }
 
-  getDish(id: string): Observable<any> {
-    console.log(this.db.collection("dishes").doc(id).valueChanges());
+  getDish(id: string): Observable<Dish> {
     return this.db.collection("dishes").doc(id).valueChanges();
   }
 

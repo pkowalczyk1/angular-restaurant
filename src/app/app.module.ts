@@ -43,7 +43,7 @@ const routes: Routes = [
     DishCartComponent,
     HomePageComponent,
     DishDetailsComponent,
-    DishBuyComponent
+    DishBuyComponent,
   ],
   imports: [
     BrowserModule,

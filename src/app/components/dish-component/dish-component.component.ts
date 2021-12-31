@@ -21,7 +21,8 @@ export class DishComponentComponent implements OnInit, OnDestroy {
   constructor(public dishesService: DishesServiceService, private cartService: CartServiceService) { }
 
   ngOnInit(): void {
-    this.subscription = this.dishesService.data.subscribe(value => {
+    this.dishesService.setCurrQuantity(this.dish);
+    this.subscription = this.dishesService.getData().subscribe(value => {
       this.minPrice = value
         .reduce((prev, current) => (prev.price < current.price) ? prev : current).price;
 

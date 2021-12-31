@@ -11,57 +11,18 @@ import {Dish} from "../../dish";
 export class DishBuyComponent implements OnInit {
   @Input() dish!: Dish;
 
-  plusShow: boolean = true;
-  disable: boolean = false;
-  dishesService: DishesServiceService;
-  cartService: CartServiceService;
-  color: string;
+  constructor(public dishesService: DishesServiceService, private cartService: CartServiceService) { }
 
-  constructor(dishesService: DishesServiceService, cartService: CartServiceService) {
-    this.dishesService = dishesService;
-    this.cartService = cartService;
-    this.color = "transparent";
-    if (this.dishesService.getCurrQuantity(this.dish) < 3) {
-      this.color = "orange";
-    }
-  }
-
-  ngOnInit(): void {
-    this.plusShow = this.dishesService.getCurrQuantity(this.dish) > 0;
-    this.disable = this.dishesService.getCurrQuantity(this.dish) >= this.dish.quantity;
-
-    this.color = "transparent";
-    if (this.dishesService.getCurrQuantity(this.dish) < 3) {
-      this.color = "orange";
-    }
-  }
+  ngOnInit(): void { }
 
   increaseChosen(): void {
-    if (this.dishesService.getCurrQuantity(this.dish) == this.dish.quantity) {
-      this.disable = false;
-    }
     this.dishesService.decreaseCurrQuantity(this.dish);
-    if (this.dishesService.getCurrQuantity(this.dish) < 3) {
-      this.color = "orange";
-    }
-    if (this.dishesService.getCurrQuantity(this.dish) == 0) {
-      this.plusShow = false;
-    }
     this.dishesService.increaseQuantity(1);
     this.cartService.addDishToCart(this.dish, 1);
   }
 
   decreaseChosen(): void {
-    if (this.dishesService.getCurrQuantity(this.dish) == 0) {
-      this.plusShow = true;
-    }
     this.dishesService.increaseCurrQuantity(this.dish);
-    if (this.dishesService.getCurrQuantity(this.dish) >= 3) {
-      this.color = "transparent";
-    }
-    if (this.dishesService.getCurrQuantity(this.dish) == this.dish.quantity) {
-      this.disable = true;
-    }
     this.dishesService.decreaseQuantity(1);
     this.cartService.decreaseDishInCart(this.dish, 1);
   }

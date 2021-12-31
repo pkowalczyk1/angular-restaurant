@@ -4,8 +4,8 @@
     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 text-center">
       <h3 *ngIf="cartService.dishesInCart.length == 0">Koszyk jest pusty</h3>
       <div *ngFor="let dish of cartService.dishesInCart" class="cart">
-        <div class="product">{{dish.name | uppercase}} x{{cartService.quantities.get(dish)}}</div>
-        <div class="price">{{cartService.totalPrices.get(dish)! * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
+        <div class="product">{{dish.name | uppercase}} x{{cartService.quantities.get(dish.id)}}</div>
+        <div class="price">{{cartService.totalPrices.get(dish.id)! * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
       </div>
       <div class="cart" *ngIf="cartService.dishesInCart.length != 0">
         <div class="product h6">SUMA</div>

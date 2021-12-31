@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Dish} from "../../dish";
 import {DishesServiceService} from "../../services/dishesService/dishesService.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-dish-details',
   templateUrl: './dish-details.component.html',
   styleUrls: ['./dish-details.component.css']
 })
-export class DishDetailsComponent implements OnInit {
-  route: ActivatedRoute;
-  dishesService: DishesServiceService;
+export class DishDetailsComponent implements OnInit, OnDestroy {
   dish!: Dish;
   errors: string[] = [];
+  id!: string;
   index: number = 0;
+  subscription!: Subscription;
 
   reviewForm: FormGroup = new FormGroup({
     nick: new FormControl('', Validators.required),
@@ -23,14 +24,18 @@ export class DishDetailsComponent implements OnInit {
     date: new FormControl('')
   });
 
-  constructor(route: ActivatedRoute, dishesService: DishesServiceService) {
-    this.route = route;
-    this.dishesService = dishesService;
-  }
+  constructor(private route: ActivatedRoute, public dishesService: DishesServiceService) { }
 
   ngOnInit(): void {
-    let id: number = +this.route.snapshot.params["id"];
-    this.dish = this.dishesService.getDishById(id);
+    let id: string = this.route.snapshot.params["id"];
+    this.subscription = this.dishesService.getDish(id).subscribe(value => {
+      this.dish = value;
+      this.dish.id = id;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   formSubmit(): void {
@@ -45,7 +50,7 @@ export class DishDetailsComponent implements OnInit {
       this.errors.push("Nie podano tytułu");
     }
     if (text.length < 20) {
-      this.errors.push("Tekst zbyt krótki, co najmniiej 20 znaków");
+      this.errors.push("Tekst zbyt krótki, co najmniej 20 znaków");
     }
     if (text.length > 500) {
       this.errors.push("Tekst zbyt długi, maksymalnie 500 znaków");

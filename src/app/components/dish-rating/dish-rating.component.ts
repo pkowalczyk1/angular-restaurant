@@ -12,18 +12,14 @@ export class DishRatingComponent implements OnInit {
 
   stars: number[] = [1, 2, 3, 4, 5];
   value: number = 0;
-  dishesService: DishesServiceService;
 
 
-  constructor(dishesService: DishesServiceService) {
-    this.dishesService = dishesService;
-  }
+  constructor(private dishesService: DishesServiceService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   rate(star: number): void {
     this.value = star;
-    this.dishesService.changeRating(this.dish, star);
+    this.dishesService.changeRating(this.dish.id, star);
   }
 }

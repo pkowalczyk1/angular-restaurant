@@ -9,14 +9,9 @@ import {DishesServiceService} from "../../services/dishesService/dishesService.s
   styleUrls: ['./dish-cart.component.css']
 })
 export class DishCartComponent implements OnInit {
-  cartService: CartServiceService;
-  dishesService: DishesServiceService;
   totalPrices!: Map<Dish, number>;
 
-  constructor(cartService: CartServiceService, dishesService: DishesServiceService) {
-    this.dishesService = dishesService;
-    this.cartService = cartService;
-  }
+  constructor(public cartService: CartServiceService, public dishesService: DishesServiceService) { }
 
   ngOnInit(): void {
   }

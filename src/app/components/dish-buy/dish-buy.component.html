@@ -1,6 +1,6 @@
 <div class="buttons">
-  <button (click)="decreaseChosen()" [disabled]="disable"><i class="fas fa-minus"></i></button>
-  <p *ngIf="dishesService.getCurrQuantity(dish) != 0" [ngStyle]="{'background-color': color}">{{dishesService.getCurrQuantity(dish)}}</p>
-  <p *ngIf="dishesService.getCurrQuantity(dish) == 0" [ngStyle]="{'background-color': color}">Wyprzedane!</p>
-  <button *ngIf="plusShow" (click)="increaseChosen()"><i class="fas fa-plus"></i></button>
+  <button (click)="decreaseChosen()" [disabled]="dishesService.getCurrQuantity(dish) == 0"><i class="fas fa-minus"></i></button>
+  <p *ngIf="dishesService.getCurrQuantity(dish) != dish.quantity" [ngClass]="{'warn' : dish.quantity - dishesService.getCurrQuantity(dish) < 3}">{{dish.quantity - dishesService.getCurrQuantity(dish)}}</p>
+  <p *ngIf="dishesService.getCurrQuantity(dish) == dish.quantity" class="warn">Wyprzedane!</p>
+  <button *ngIf="dishesService.getCurrQuantity(dish) != dish.quantity" (click)="increaseChosen()"><i class="fas fa-plus"></i></button>
 </div>

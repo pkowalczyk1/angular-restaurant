@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row justify-content-center">
     <span [ngStyle]="dishesService.getTotalQuantity() <= 10? {'background-color': 'orange'} : {'background-color': 'blue'}" class="d-flex justify-content-center h4 total m-3">Ilość dodanych dań: {{dishesService.getTotalQuantity()}}</span>
-    <div *ngIf="dishesService.dishes.length != 0">
+    <div *ngIf="(dishesService.data | async)?.length != 0">
       <h3>Filtruj dania</h3>
       <app-filter-form></app-filter-form>
     </div>
   </div>
   <div class="row mt-3">
     <div class="text-and-input">
-      <h3 *ngIf="dishesService.dishes.length != 0">Lista dań</h3>
+      <h3 *ngIf="(dishesService.data | async)?.length != 0">Lista dań</h3>
       <div class="select">
         <h6>Ilość elementów na stronie</h6>
         <select (change)="changePerPage()" [formControl]="perPageSelect" class="form-select-sm">
@@ -18,7 +18,7 @@
         </select>
       </div>
     </div>
-    <ng-container *ngIf="dishesService.dishes | dishesFilter : dishesService.filterTypes : dishesService.filterMinPrice : dishesService.filterMaxPrice : dishesService.filterCategories : dishesService.filterRating : test as dishList">
+    <ng-container *ngIf="(dishesService.data | async) | dishesFilter : dishesService.filterTypes : dishesService.filterMinPrice : dishesService.filterMaxPrice : dishesService.filterCategories : dishesService.filterRating : test as dishList">
       <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let index of createRange()">
         <ng-container *ngIf="currPage * perPage + index < dishList.length">
           <app-dish-component [dish]="dishList[currPage * perPage + index]" (remove)="removeDish($event)"></app-dish-component>

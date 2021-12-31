@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DishesServiceService} from "../../services/dishesService/dishesService.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Subject} from "rxjs";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-filter-form',
@@ -9,49 +9,67 @@ import {Subject} from "rxjs";
   styleUrls: ['./filter-form.component.css']
 })
 export class FilterFormComponent implements OnInit, OnDestroy {
-  dishesService: DishesServiceService;
   form: FormGroup;
   rating: number[] = [0, 1, 2, 3, 4, 5];
-  currencyRatio: number = 1;
-  minPriceSubject: Subject<number>;
-  maxPriceSubject: Subject<number>;
+  categories: string[] = [];
+  types: string[] = [];
+  minPrice: number = -1;
+  maxPrice: number = -1;
+  subscription!: Subscription;
 
-  constructor(dishesService: DishesServiceService, private formBuilder: FormBuilder) {
-    this.dishesService = dishesService;
+  constructor(public dishesService: DishesServiceService, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       type: [''],
       category: [''],
       priceLower: [''],
       priceUpper: [''],
       rating: ['']
-    })
-
-    this.minPriceSubject = dishesService.minPriceSubject;
-    this.maxPriceSubject = dishesService.maxPriceSubject;
-
-    this.form.controls["priceLower"].setValue(dishesService.minPrice);
-    this.form.controls["priceUpper"].setValue(dishesService.maxPrice);
-
-    this.minPriceSubject.subscribe(() => {
-      this.form.controls["priceLower"].setValue(dishesService.minPrice);
-      this.form.controls["priceUpper"].setValue(dishesService.maxPrice);
-      this.formChanged();
-
     });
-
-    this.maxPriceSubject.subscribe(() => {
-      this.form.controls["priceUpper"].setValue(dishesService.maxPrice);
-      this.form.controls["priceLower"].setValue(dishesService.minPrice);
-      this.formChanged();
-    })
   }
 
+
   ngOnInit(): void {
+    this.subscription = this.dishesService.data.subscribe(value => {
+      let newCategories: string[] = value
+        .map(dish => dish.category)
+        .filter((elem, index, self) => index == self.indexOf(elem));
+
+      let newTypes: string[] = value
+        .map(dish => dish.type)
+        .filter((elem, index, self) => index == self.indexOf(elem));
+
+      let newMinPrice: number = value
+        .reduce((prev, current) => (prev.price < current.price) ? prev : current).price;
+
+      let newMaxPrice: number = value
+        .reduce((prev, current) => (prev.price >current.price) ? prev : current).price;
+
+      if (this.categories.length != newCategories.length) {
+        this.categories = newCategories;
+        this.form.controls["category"].reset();
+      }
+
+      if (this.types.length != newTypes.length) {
+        this.types = newTypes;
+        this.form.controls["type"].reset();
+      }
+
+      if (newMinPrice > this.minPrice || this.minPrice == -1) {
+        this.minPrice = newMinPrice;
+        this.form.controls["priceLower"].setValue(newMinPrice);
+      }
+
+      if (newMaxPrice < this.maxPrice || this.maxPrice == -1) {
+        this.maxPrice = newMaxPrice;
+        this.form.controls["priceUpper"].setValue(newMaxPrice);
+      }
+
+      this.formChanged();
+    });
   }
 
   ngOnDestroy(): void {
-    // this.minPriceSubject.unsubscribe();
-    // this.maxPriceSubject.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   formChanged(): void {
@@ -66,22 +84,22 @@ export class FilterFormComponent implements OnInit, OnDestroy {
     types = this.form.value.type;
     categories = this.form.value.category;
     if (types == null || types.length == 0 || !this.checkIfTypesCorrect(types)) {
-      types = this.dishesService.types;
+      types = this.types;
     }
     if (categories == null || categories.length == 0 ||  !this.checkIfCategoriesCorrect(categories)) {
-      categories = this.dishesService.categories;
+      categories = this.categories;
     }
-    if (minPrice < this.dishesService.minPrice) {
-      minPrice = this.dishesService.minPrice;
+    if (minPrice < this.minPrice) {
+      minPrice = this.minPrice;
     }
-    if (maxPrice > this.dishesService.maxPrice) {
-      maxPrice = this.dishesService.maxPrice;
+    if (maxPrice > this.maxPrice) {
+      maxPrice = this.maxPrice;
     }
     rating = this.form.value.rating;
     if (this.form.value.rating == null || this.form.value.rating.length == 0) {
       rating = [0, 1, 2, 3, 4, 5];
     }
-    this.dishesService.changeFilters(minPrice / this.currencyRatio, maxPrice / this.currencyRatio, types, categories, rating);
+    this.dishesService.changeFilters(minPrice, maxPrice, types, categories, rating);
   }
 
   resetCategory(): void {
@@ -101,7 +119,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
 
   checkIfCategoriesCorrect(categories: string[]): boolean {
     for (let category of categories) {
-      if (!this.dishesService.categories.includes(category)) {
+      if (!this.categories.includes(category)) {
         return false;
       }
     }
@@ -111,7 +129,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
 
   checkIfTypesCorrect(types: string[]): boolean {
     for (let type of types) {
-      if (!this.dishesService.types.includes(type)) {
+      if (!this.types.includes(type)) {
         return false;
       }
     }

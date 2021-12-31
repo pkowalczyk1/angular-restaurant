@@ -1,7 +1,7 @@
 import {Review} from "./review";
 
 export interface Dish {
-  id: number;
+  id: string;
   name: string;
   cuisine: string;
   type: string;

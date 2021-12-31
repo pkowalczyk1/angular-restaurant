@@ -10,10 +10,10 @@ export class DishesFilterPipe implements PipeTransform {
     if (!dishes) {
       return [];
     }
-    if (type) {
+    if (type && type.length != 0) {
       dishes = dishes.filter(dish => type.includes(dish.type));
     }
-    if (category) {
+    if (category && category.length != 0) {
       dishes = dishes.filter(dish => category.includes(dish.category));
     }
     // @ts-ignore

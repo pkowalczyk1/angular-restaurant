@@ -10,16 +10,12 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./dish-list.component.css'],
 })
 export class DishListComponent implements OnInit {
-  dishesService: DishesServiceService;
-  cartService: CartServiceService;
   perPage: number = 6;
   currPage: number = 0;
   test: number = 0;
   perPageSelect: FormControl;
 
-  constructor(dishesService: DishesServiceService, cartService: CartServiceService) {
-    this.dishesService = dishesService
-    this.cartService = cartService;
+  constructor(public dishesService: DishesServiceService, private cartService: CartServiceService) {
     this.perPageSelect = new FormControl('')
     this.perPageSelect.setValue(6);
   }
@@ -28,7 +24,7 @@ export class DishListComponent implements OnInit {
   }
 
   removeDish(dish: Dish): void {
-    this.dishesService.remove(dish);
+    this.dishesService.removeDish(dish);
     this.test++;
   }
 

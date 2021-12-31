@@ -6,44 +6,44 @@ import {Dish} from "../../dish";
 })
 export class CartServiceService {
   dishesInCart: Dish[] = [];
-  quantities: Map<Dish, number> = new Map<Dish, number>();
-  totalPrices: Map<Dish, number> = new Map<Dish, number>();
+  quantities: Map<string, number> = new Map<string, number>();
+  totalPrices: Map<string, number> = new Map<string, number>();
   total: number = 0;
 
   constructor() {
   }
 
   addDishToCart(dish: Dish, change: number): void {
-    if (this.quantities.get(dish) == null) {
-      this.quantities.set(dish, change);
+    if (this.quantities.get(dish.id) == null) {
+      this.quantities.set(dish.id, change);
       this.dishesInCart.push(dish);
-      this.totalPrices.set(dish, dish.price * change);
+      this.totalPrices.set(dish.id, dish.price * change);
     }
     else {
-      let curr = this.quantities.get(dish);
+      let curr = this.quantities.get(dish.id);
       // @ts-ignore
-      this.quantities.set(dish, curr + change);
+      this.quantities.set(dish.id, curr + change);
       // @ts-ignore
-      this.totalPrices.set(dish, dish.price * (curr + change));
+      this.totalPrices.set(dish.id, dish.price * (curr + change));
     }
     this.total += dish.price;
   }
 
   decreaseDishInCart(dish: Dish, change: number): void {
-    let curr = this.quantities.get(dish);
+    let curr = this.quantities.get(dish.id);
     // @ts-ignore
     curr -= change;
     if (curr == 0) {
-      this.quantities.delete(dish);
-      this.totalPrices.delete(dish);
+      this.quantities.delete(dish.id);
+      this.totalPrices.delete(dish.id);
       let index: number = this.dishesInCart.indexOf(dish);
       this.dishesInCart.splice(index, 1);
     }
     else {
       // @ts-ignore
-      this.quantities.set(dish, curr);
+      this.quantities.set(dish.id, curr);
       // @ts-ignore
-      this.totalPrices.set(dish, curr * dish.price)
+      this.totalPrices.set(dish.id, curr * dish.price)
     }
     this.total -= dish.price;
   }
@@ -54,8 +54,8 @@ export class CartServiceService {
       // @ts-ignore
       this.total -= this.totalPrices.get(dish);
       this.dishesInCart.splice(index, 1);
-      this.quantities.delete(dish);
-      this.totalPrices.delete(dish);
+      this.quantities.delete(dish.id);
+      this.totalPrices.delete(dish.id);
     }
   }
 }

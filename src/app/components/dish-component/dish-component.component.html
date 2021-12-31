@@ -1,6 +1,6 @@
-<div class="card h-100" [ngClass]="{'max-price' : dish == dishesService.getMaxDish(), 'min-price' : dish == dishesService.getMinDish()}">
+<div class="card h-100" [ngClass]="{'max-price' : dish.price == maxPrice, 'min-price' : dish.price == minPrice}">
   <a [routerLink]="['/details', dish.id]" routerLinkActive="active">
-    <img [src]="dish.photos[0]" class="card-img-top">
+    <img [src]="dish.photos[0]" class="card-img-top" alt="">
   </a>
   <div class="card-body">
     <div class="name">

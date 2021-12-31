@@ -11,8 +11,6 @@ import {Router} from "@angular/router";
 export class DishFormComponent implements OnInit {
   @Output() add: EventEmitter<void> = new EventEmitter<void>();
 
-  router: Router;
-
   dishForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     cuisine: new FormControl('', Validators.required),
@@ -25,12 +23,7 @@ export class DishFormComponent implements OnInit {
     photos: new FormControl('', Validators.required)
   })
 
-  dishesService: DishesServiceService;
-
-  constructor(dishesService: DishesServiceService, router: Router) {
-    this.dishesService = dishesService;
-    this.router = router;
-  }
+  constructor(private dishesService: DishesServiceService, private router: Router) { }
 
   ngOnInit(): void {
   }

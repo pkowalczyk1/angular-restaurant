@@ -17,6 +17,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { DishDetailsComponent } from './components/dish-details/dish-details.component';
 import { DishBuyComponent } from './components/dish-buy/dish-buy.component';
+import { AngularFireModule } from "@angular/fire/compat";
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 const routes: Routes = [
   {path: "home", component: HomePageComponent},
@@ -45,7 +48,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule
   ],
   providers: [DishesServiceService, CartServiceService],
   bootstrap: [AppComponent]

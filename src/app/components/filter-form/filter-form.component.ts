@@ -42,7 +42,7 @@ export class FilterFormComponent implements OnInit, OnDestroy {
         .reduce((prev, current) => (prev.price < current.price) ? prev : current).price;
 
       let newMaxPrice: number = value
-        .reduce((prev, current) => (prev.price >current.price) ? prev : current).price;
+        .reduce((prev, current) => (prev.price > current.price) ? prev : current).price;
 
       if (this.categories.length != newCategories.length) {
         this.categories = newCategories;
@@ -54,12 +54,12 @@ export class FilterFormComponent implements OnInit, OnDestroy {
         this.form.controls["type"].reset();
       }
 
-      if (newMinPrice > this.minPrice || this.minPrice == -1) {
+      if (newMinPrice != this.minPrice || this.minPrice == -1) {
         this.minPrice = newMinPrice;
         this.form.controls["priceLower"].setValue(newMinPrice);
       }
 
-      if (newMaxPrice < this.maxPrice || this.maxPrice == -1) {
+      if (newMaxPrice != this.maxPrice || this.maxPrice == -1) {
         this.maxPrice = newMaxPrice;
         this.form.controls["priceUpper"].setValue(newMaxPrice);
       }

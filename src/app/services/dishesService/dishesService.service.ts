@@ -19,6 +19,7 @@ export class DishesServiceService {
   filterTypes: string[] = [];
   filterCategories: string[] = [];
   filterRating: number[] = [0, 1, 2, 3, 4, 5];
+  reviews: Map<string, Review[]> = new Map<string, Review[]>();
 
   constructor(db: AngularFirestore) {
     this.db = db;
@@ -120,7 +121,7 @@ export class DishesServiceService {
     return this.db.collection("dishes").doc(id).valueChanges();
   }
 
-  addReview(dish: Dish, newReview: any) {
+  addReview(dish: Dish, newReview: any): void {
     let review: Review = {
       owner: newReview.nick,
       title: newReview.title,
@@ -128,5 +129,24 @@ export class DishesServiceService {
       date: newReview.date,
     };
     dish.reviews.push(review);
+    if (this.reviews.get(dish.id) == undefined) {
+      let newArr: Review[] = [];
+      newArr.push(review);
+      this.reviews.set(dish.id, newArr);
+    }
+    else {
+      // @ts-ignore
+      let arr: Review[] = this.reviews.get(dish.id);
+      arr.push(review);
+      this.reviews.set(dish.id, arr);
+    }
+  }
+
+  getReviews(dish: Dish): Review[] {
+    if (this.reviews.get(dish.id) == undefined) {
+      return [];
+    }
+    // @ts-ignore
+    return this.reviews.get(dish.id)
   }
 }

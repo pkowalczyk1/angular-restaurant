@@ -1,16 +1,39 @@
-<nav class="navbar navbar-light bg-light">
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--  <div class="container-fluid">-->
+<!--    <div class="d-flex left align-items-center">-->
+<!--      <a routerLink="" routerLinkActive="active" class="text-decoration-none">-->
+<!--        <span class="navbar-brand mb-0 h1"><i class="fas fa-utensils" style="color: green; margin-right: 10px;"></i> Worldwide Cuisine</span>-->
+<!--      </a>-->
+<!--      <h6 (click)="changeValue()" class="currency">Zmień walutę</h6>-->
+<!--      <a routerLink="/list" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Lista dań</h6></a>-->
+<!--      <a routerLink="/cart" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Koszyk</h6></a>-->
+<!--      <a routerLink="/add" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Dodaj danie</h6></a>-->
+<!--    </div>-->
+<!--    <span class="d-flex justify-content-center h4 total align-items-center">-->
+<!--      Waluta: <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign m-2"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign m-2"></i>-->
+<!--    </span>-->
+<!--  </div>-->
+<!--</nav>-->
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <div class="d-flex left align-items-center">
-      <a routerLink="" routerLinkActive="active" class="text-decoration-none">
-        <span class="navbar-brand mb-0 h1"><i class="fas fa-utensils" style="color: green; margin-right: 10px;"></i> Worldwide Cuisine</span>
-      </a>
-      <h6 (click)="changeValue()" class="currency">Zmień walutę</h6>
-      <a routerLink="/list" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Lista dań</h6></a>
-      <a routerLink="/cart" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Koszyk</h6></a>
-      <a routerLink="/add" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Dodaj danie</h6></a>
+    <a routerLink="" routerLinkActive="active" class="text-decoration-none navbar-brand">
+      <span class="navbar-brand mb-0 h1"><i class="fas fa-utensils" style="color: green; margin-right: 10px;"></i> Worldwide Cuisine</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <h6 (click)="changeValue()" class="currency nav-link active">Zmień walutę</h6>
+        <a routerLink="/list" routerLinkActive="active" class="nav-link"><h6>Lista dań</h6></a>
+        <a routerLink="/cart" routerLinkActive="active" class="nav-link"><h6>Koszyk</h6></a>
+        <a routerLink="/add" routerLinkActive="active" class="nav-link"><h6>Dodaj danie</h6></a>
+      </div>
+      <span class="d-flex justify-content-center h4 total align-items-center">
+        Waluta: <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign m-2"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign m-2"></i>
+      </span>
     </div>
-    <span class="d-flex justify-content-center h4 total align-items-center">
-      Waluta: <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign m-2"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign m-2"></i>
-    </span>
   </div>
 </nav>

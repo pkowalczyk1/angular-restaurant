@@ -17,12 +17,16 @@
   border-radius: 10px;
 }
 
-@media screen and (max-width: 440px) {
-  .d-flex {
-    flex-direction: column;
-  }
-
-  .currency {
-    margin-bottom: 15px;
-  }
+.currency {
+  cursor: pointer;
 }
+
+/*@media screen and (max-width: 440px) {*/
+/*  .d-flex {*/
+/*    flex-direction: column;*/
+/*  }*/
+
+/*  .currency {*/
+/*    margin-bottom: 15px;*/
+/*  }*/
+/*}*/

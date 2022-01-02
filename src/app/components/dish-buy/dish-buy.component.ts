@@ -13,7 +13,9 @@ export class DishBuyComponent implements OnInit {
 
   constructor(public dishesService: DishesServiceService, private cartService: CartServiceService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.dishesService.setCurrQuantity(this.dish);
+  }
 
   increaseChosen(): void {
     this.dishesService.decreaseCurrQuantity(this.dish);

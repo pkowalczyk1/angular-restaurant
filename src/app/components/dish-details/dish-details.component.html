@@ -58,8 +58,8 @@
         </div>
       </form>
       <div class="justify-content-center align-items-center mb-5">
-        <h5 *ngIf="dish.reviews.length != 0">Dodane recenzje</h5>
-        <div class="card" style="width: 100%;" *ngFor="let review of dish.reviews">
+        <h5 *ngIf="dishesService.getReviews(dish).length != 0">Dodane recenzje</h5>
+        <div class="card" style="width: 100%;" *ngFor="let review of dishesService.getReviews(dish)">
           <div class="card-body">
             <h5 class="card-title">{{review.title}}</h5>
             <div class="nick-and-date">

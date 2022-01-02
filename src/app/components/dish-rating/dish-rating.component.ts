@@ -20,6 +20,7 @@ export class DishRatingComponent implements OnInit {
 
   rate(star: number): void {
     this.value = star;
-    this.dishesService.changeRating(this.dish.id, star);
+    this.dish.rating = this.value;
+    this.dishesService.updateDish(this.dish.id, this.dish);
   }
 }

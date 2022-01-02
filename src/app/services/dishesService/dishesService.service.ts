@@ -104,8 +104,8 @@ export class DishesServiceService {
     this.filterRating = rating;
   }
 
-  changeRating(id: string, star: number) {
-    this.db.collection("dishes").doc(id).update({rating: star});
+  updateDish(id: string, dish: Dish) {
+    this.db.collection("dishes").doc(id).update(dish);
   }
 
   getTotalQuantity(): number {

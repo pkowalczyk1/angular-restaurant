@@ -13,6 +13,11 @@ export class CartServiceService {
   constructor() {
   }
 
+  getQuantity(dish: Dish): number {
+    // @ts-ignore
+    return this.quantities.get(dish.id);
+  }
+
   addDishToCart(dish: Dish, change: number): void {
     if (this.quantities.get(dish.id) == null) {
       this.quantities.set(dish.id, change);
@@ -26,18 +31,19 @@ export class CartServiceService {
       // @ts-ignore
       this.totalPrices.set(dish.id, dish.price * (curr + change));
     }
-    this.total += dish.price;
+    this.total += change * dish.price;
   }
 
   decreaseDishInCart(dish: Dish, change: number): void {
-    let curr = this.quantities.get(dish.id);
+    // @ts-ignore
+    let curr: number = this.quantities.get(dish.id);
     // @ts-ignore
     curr -= change;
     if (curr == 0) {
       this.quantities.delete(dish.id);
       this.totalPrices.delete(dish.id);
-      let index: number = this.dishesInCart.indexOf(dish);
-      this.dishesInCart.splice(index, 1);
+      let toDelete: Dish = this.dishesInCart.filter(obj => obj.id == dish.id)[0];
+      this.dishesInCart.splice(this.dishesInCart.indexOf(toDelete), 1);
     }
     else {
       // @ts-ignore
@@ -45,15 +51,15 @@ export class CartServiceService {
       // @ts-ignore
       this.totalPrices.set(dish.id, curr * dish.price)
     }
-    this.total -= dish.price;
+    this.total -= change * dish.price;
   }
 
   removeDishFromCart(dish: Dish): void {
-    if (this.dishesInCart.includes(dish)) {
-      let index: number = this.dishesInCart.indexOf(dish);
+    if (this.dishesInCart.filter(obj => obj.id == dish.id).length != 0) {
+      let toDelete: Dish = this.dishesInCart.filter(obj => obj.id == dish.id)[0];
       // @ts-ignore
-      this.total -= this.totalPrices.get(dish);
-      this.dishesInCart.splice(index, 1);
+      this.total -= this.totalPrices.get(dish.id);
+      this.dishesInCart.splice(this.dishesInCart.indexOf(toDelete), 1);
       this.quantities.delete(dish.id);
       this.totalPrices.delete(dish.id);
     }

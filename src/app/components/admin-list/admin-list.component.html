@@ -1,0 +1,9 @@
+<div class="container" *ngIf="dishesService.getData() | async as dishes">
+  <div class="row mt-3">
+    <h3>Lista dań</h3>
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let dish of dishes">
+      <app-dish-component [dish]="dish" (remove)="dishesService.removeDish($event)"></app-dish-component>
+    </div>
+    <app-dish-form></app-dish-form>
+  </div>
+</div>

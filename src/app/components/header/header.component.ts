@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DishesServiceService} from "../../services/dishesService/dishesService.service";
+import {AuthServiceService} from "../../services/authService/auth-service.service";
 
 @Component({
   selector: 'app-header',
@@ -7,10 +8,8 @@ import {DishesServiceService} from "../../services/dishesService/dishesService.s
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  dishesService: DishesServiceService;
 
-  constructor(dishesService: DishesServiceService) {
-    this.dishesService = dishesService;
+  constructor(public dishesService: DishesServiceService, public authService: AuthServiceService) {
   }
 
   ngOnInit(): void {

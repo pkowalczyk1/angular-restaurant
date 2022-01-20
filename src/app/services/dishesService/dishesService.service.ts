@@ -128,6 +128,7 @@ export class DishesServiceService {
       text: newReview.text,
       date: newReview.date,
     };
+    // @ts-ignore
     dish.reviews.push(review);
     if (this.reviews.get(dish.id) == undefined) {
       let newArr: Review[] = [];

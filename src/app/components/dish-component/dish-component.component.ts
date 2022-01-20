@@ -3,6 +3,7 @@ import {Dish} from "../../dish";
 import {DishesServiceService} from "../../services/dishesService/dishesService.service";
 import {CartServiceService} from "../../services/cartService/cart-service.service";
 import {Subscription} from "rxjs";
+import {AuthServiceService} from "../../services/authService/auth-service.service";
 
 @Component({
   selector: 'app-dish-component',
@@ -18,7 +19,7 @@ export class DishComponentComponent implements OnInit, OnDestroy {
   test!: number;
   subscription!: Subscription;
 
-  constructor(public dishesService: DishesServiceService, private cartService: CartServiceService) { }
+  constructor(public dishesService: DishesServiceService, private cartService: CartServiceService, public authService: AuthServiceService) { }
 
   ngOnInit(): void {
     this.dishesService.setCurrQuantity(this.dish);

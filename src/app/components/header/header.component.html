@@ -1,21 +1,3 @@
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--  <div class="container-fluid">-->
-<!--    <div class="d-flex left align-items-center">-->
-<!--      <a routerLink="" routerLinkActive="active" class="text-decoration-none">-->
-<!--        <span class="navbar-brand mb-0 h1"><i class="fas fa-utensils" style="color: green; margin-right: 10px;"></i> Worldwide Cuisine</span>-->
-<!--      </a>-->
-<!--      <h6 (click)="changeValue()" class="currency">Zmień walutę</h6>-->
-<!--      <a routerLink="/list" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Lista dań</h6></a>-->
-<!--      <a routerLink="/cart" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Koszyk</h6></a>-->
-<!--      <a routerLink="/add" routerLinkActive="active" class="link-dark text-decoration-none"><h6>Dodaj danie</h6></a>-->
-<!--    </div>-->
-<!--    <span class="d-flex justify-content-center h4 total align-items-center">-->
-<!--      Waluta: <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign m-2"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign m-2"></i>-->
-<!--    </span>-->
-<!--  </div>-->
-<!--</nav>-->
-
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a routerLink="" routerLinkActive="active" class="text-decoration-none navbar-brand">
@@ -25,15 +7,44 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <h6 (click)="changeValue()" class="currency nav-link active">Zmień walutę</h6>
-        <a routerLink="/list" routerLinkActive="active" class="nav-link"><h6>Lista dań</h6></a>
-        <a routerLink="/cart" routerLinkActive="active" class="nav-link"><h6>Koszyk</h6></a>
-        <a routerLink="/add" routerLinkActive="active" class="nav-link"><h6>Dodaj danie</h6></a>
-      </div>
-      <span class="d-flex justify-content-center h4 total align-items-center">
-        Waluta: <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign m-2"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign m-2"></i>
-      </span>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a (click)="changeValue()" class="currency nav-link active">Zmień walutę</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/list" routerLinkActive="active" class="nav-link">Lista dań</a>
+        </li>
+        <li class="nav-item">
+          <ng-container *ngIf="(authService.currentUser | async) as user">
+            <a routerLink="/cart" routerLinkActive="active" class="nav-link">Koszyk</a>
+          </ng-container>
+        </li>
+        <li class="nav-item">
+          <ng-container *ngIf="(authService.currentUser | async) as user">
+            <a *ngIf="user.roles.admin || user.roles.admin" routerLink="/admin-list" routerLinkActive="active" class="nav-link">Panel managera</a>
+          </ng-container>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a routerLink="/register" *ngIf="!(authService.currentUser | async)" routerLinkActive="active" class="nav-link">Utwórz konto</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/login" *ngIf="!(authService.currentUser | async)" routerLinkActive="active" class="nav-link">Zaloguj</a>
+        </li>
+        <li class="nav-item">
+          <ng-container *ngIf="(authService.currentUser | async) as user">
+            <p class="nav-link">Witaj {{user.displayName}}</p>
+          </ng-container>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link logout" *ngIf="(authService.currentUser | async)" (click)="authService.logOut()">Wyloguj</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link h5 text-black">Waluta: <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

@@ -32,6 +32,10 @@ button {
   border-color: green;
 }
 
+.link-primary {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 440px) {
   .card-footer {
     flex-direction: column;

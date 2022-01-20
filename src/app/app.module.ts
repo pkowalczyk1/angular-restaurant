@@ -7,7 +7,7 @@ import { DishesServiceService } from './services/dishesService/dishesService.ser
 import { DishComponentComponent } from './components/dish-component/dish-component.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DishFormComponent } from './components/dish-form/dish-form.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { DishRatingComponent } from './components/dish-rating/dish-rating.component';
 import { DishesFilterPipe } from './pipes/dishes-filter/dishes-filter.pipe';
 import { FilterFormComponent } from './components/filter-form/filter-form.component';
@@ -20,13 +20,23 @@ import { DishBuyComponent } from './components/dish-buy/dish-buy.component';
 import { AngularFireModule } from "@angular/fire/compat";
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import {AngularFireAuth, AngularFireAuthModule} from "@angular/fire/compat/auth";
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import {AuthGuard} from "./guard/auth.guard";
+import { DishUpdateComponent } from './components/dish-update/dish-update.component';
+import { AdminListComponent } from './components/admin-list/admin-list.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 const routes: Routes = [
   {path: "home", component: HomePageComponent},
   {path: "list", component: DishListComponent},
-  {path: "cart", component: DishCartComponent},
-  {path: "add", component: DishFormComponent},
-  {path: "details/:id", component: DishDetailsComponent},
+  {path: "cart", component: DishCartComponent, canActivate: [AuthGuard]},
+  {path: "details/:id", component: DishDetailsComponent, canActivate: [AuthGuard]},
+  {path: "register", component: RegisterComponent},
+  {path: "login", component: LoginComponent},
+  {path: "update/:id", component: DishUpdateComponent},
+  {path: "admin-list", component: AdminListComponent},
   {path: "", redirectTo: "/home", pathMatch: "full"},
 ];
 
@@ -44,13 +54,20 @@ const routes: Routes = [
     HomePageComponent,
     DishDetailsComponent,
     DishBuyComponent,
+    RegisterComponent,
+    LoginComponent,
+    DishUpdateComponent,
+    AdminListComponent,
+    UsersListComponent,
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    FormsModule
   ],
   providers: [DishesServiceService, CartServiceService],
   bootstrap: [AppComponent]

@@ -1,0 +1,18 @@
+<div class="container justify-content-center align-items-center">
+  <h3>Utwórz konto</h3>
+  <form class="text-center" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="email" class="form-label">Adres email</label>
+      <input [(ngModel)]="email" type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Nazwa użytkownika</label>
+      <input [(ngModel)]="username" type="email" class="form-control" id="username" name="username" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Hasło</label>
+      <input [(ngModel)]="password" type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

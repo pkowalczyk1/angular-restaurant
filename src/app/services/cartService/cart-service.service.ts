@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import {Dish} from "../../dish";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {Observable, take} from "rxjs";
+import {Position} from "../../position";
+import {AuthServiceService} from "../authService/auth-service.service";
+import {User} from "../../user";
 
 @Injectable({
   providedIn: 'root'
@@ -10,58 +15,39 @@ export class CartServiceService {
   totalPrices: Map<string, number> = new Map<string, number>();
   total: number = 0;
 
-  constructor() {
+  db: any;
+
+  constructor(db: AngularFirestore, private authService: AuthServiceService) {
+    this.db = db;
   }
 
-  getQuantity(dish: Dish): number {
-    // @ts-ignore
-    return this.quantities.get(dish.id);
+  getUser(): Observable<User | null | undefined> {
+    return this.authService.currentUser;
   }
 
-  addDishToCart(dish: Dish, change: number): void {
-    if (this.quantities.get(dish.id) == null) {
-      this.quantities.set(dish.id, change);
-      this.dishesInCart.push(dish);
-      this.totalPrices.set(dish.id, dish.price * change);
-    }
-    else {
-      let curr = this.quantities.get(dish.id);
-      // @ts-ignore
-      this.quantities.set(dish.id, curr + change);
-      // @ts-ignore
-      this.totalPrices.set(dish.id, dish.price * (curr + change));
-    }
-    this.total += change * dish.price;
+  changeCart(positions: Position[]): void {
+    this.db.collection("users").doc(this.authService.getUid()).update({cart: positions});
   }
 
-  decreaseDishInCart(dish: Dish, change: number): void {
-    // @ts-ignore
-    let curr: number = this.quantities.get(dish.id);
-    // @ts-ignore
-    curr -= change;
-    if (curr == 0) {
-      this.quantities.delete(dish.id);
-      this.totalPrices.delete(dish.id);
-      let toDelete: Dish = this.dishesInCart.filter(obj => obj.id == dish.id)[0];
-      this.dishesInCart.splice(this.dishesInCart.indexOf(toDelete), 1);
-    }
-    else {
-      // @ts-ignore
-      this.quantities.set(dish.id, curr);
-      // @ts-ignore
-      this.totalPrices.set(dish.id, curr * dish.price)
-    }
-    this.total -= change * dish.price;
+  submitCart(cart: Position[], currHist: string[]): void {
+    let dishIds: string[] = cart.map(value => value.dishId);
+    console.log(dishIds);
+    let tmp: string[] = currHist.concat(dishIds);
+    console.log(tmp);
+    currHist = tmp.filter((item, index) => tmp.indexOf(item) === index);
+    console.log(tmp);
+    this.db.collection("users").doc(this.authService.getUid()).update({history: currHist, cart: []});
   }
 
-  removeDishFromCart(dish: Dish): void {
-    if (this.dishesInCart.filter(obj => obj.id == dish.id).length != 0) {
-      let toDelete: Dish = this.dishesInCart.filter(obj => obj.id == dish.id)[0];
-      // @ts-ignore
-      this.total -= this.totalPrices.get(dish.id);
-      this.dishesInCart.splice(this.dishesInCart.indexOf(toDelete), 1);
-      this.quantities.delete(dish.id);
-      this.totalPrices.delete(dish.id);
-    }
+  removeDishFromCart(dish: Dish) {
+    this.db.collection("users").valueChanges().pipe(take(2)).subscribe((users: User[]) => {
+      for (let user of users) {
+        if (user.cart.map(value => value.dishId).includes(dish.id)) {
+          let toDelete: Position = user.cart.filter(value => value.dishId == dish.id)[0];
+          user.cart.splice(user.cart.indexOf(toDelete), 1);
+          this.db.collection("users").doc(user.uid).update({cart: user.cart});
+        }
+      }
+    });
   }
 }

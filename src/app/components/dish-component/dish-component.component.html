@@ -13,9 +13,9 @@
   </div>
   <div class="card-footer">
     <ng-container *ngIf="authService.currentUser | async as user">
-      <app-dish-buy [dish]="dish" *ngIf="!user.roles.manager && !user.roles.admin"></app-dish-buy>
-      <a class="link-primary" (click)="removeDish()" *ngIf="user.roles.admin">Usuń</a>
-      <a class="link-primary" [routerLink]="['/update', dish.id]" routerLinkActive="active">Edytuj</a>
+      <app-dish-buy [dish]="dish" [cart]="cart" *ngIf="!user.roles.manager && !user.roles.admin"></app-dish-buy>
+      <a class="link-primary" (click)="removeDish()" *ngIf="user.roles.admin || user.roles.manager">Usuń</a>
+      <a class="link-primary" *ngIf="user.roles.admin || user.roles.manager" [routerLink]="['/update', dish.id]" routerLinkActive="active">Edytuj</a>
     </ng-container>
   </div>
 </div>

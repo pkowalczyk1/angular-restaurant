@@ -4,17 +4,21 @@ import {Router} from "@angular/router";
 import {User} from "../../user";
 import {AngularFirestore, AngularFirestoreDocument} from "@angular/fire/compat/firestore";
 import {Observable, of, switchMap} from "rxjs";
+import {Position} from "../../position";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
   currentUser: Observable<User | null | undefined>;
+  users: Observable<User[]>;
+  uid: string = "";
 
   constructor(private afAuth: AngularFireAuth, private router: Router, private db: AngularFirestore) {
     this.currentUser = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+          this.uid = user.uid;
           return this.db.doc<User>(`users/${user.uid}`).valueChanges();
         }
         else {
@@ -22,6 +26,17 @@ export class AuthServiceService {
         }
       })
     );
+
+    // @ts-ignore
+    this.users = this.db.collection("users").valueChanges();
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.users;
+  }
+
+  getUid(): string {
+    return this.uid;
   }
 
   login(email: string, password: string): void {
@@ -36,7 +51,7 @@ export class AuthServiceService {
     this.afAuth.createUserWithEmailAndPassword(email, password)
       .then(result => {
         this.updateUserData(result.user, username);
-        this.router.navigate(['login']);
+        this.router.navigate(['list']);
       })
       .catch(error => window.alert(error.message));
   }
@@ -50,17 +65,19 @@ export class AuthServiceService {
       .catch(error => window.alert(error.message));
   }
 
-  updateUserData(user: any, username: string) {
+  updateUserData(user: any, username: any, admin: boolean = false, manager: boolean = false, banned: boolean = false, cart: Position[] = []) {
     let userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
     let data: User = {
       uid: user.uid,
       email: user.email,
       displayName: username,
       roles: {
-        manager: true,
-        admin: true,
-        banned: false
-      }
+        manager: manager,
+        admin: admin,
+        banned: banned
+      },
+      cart: cart,
+      history: []
     }
 
     return userRef.set(data, {merge: true});

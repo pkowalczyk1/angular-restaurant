@@ -1,5 +1,5 @@
 export interface Roles {
-  manager?: boolean;
-  admin?: boolean;
-  banned?: boolean;
+  manager: boolean;
+  admin: boolean;
+  banned: boolean;
 }

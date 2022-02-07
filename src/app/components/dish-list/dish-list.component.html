@@ -1,6 +1,8 @@
 <div class="container" *ngIf="dishesService.getData() | async as dishes">
   <div class="row justify-content-center">
-    <span [ngStyle]="dishesService.getTotalQuantity() <= 10? {'background-color': 'orange'} : {'background-color': 'blue'}" class="d-flex justify-content-center h4 total m-3">Ilość dodanych dań: {{dishesService.getTotalQuantity()}}</span>
+    <ng-container *ngIf="cart">
+      <span [ngStyle]="getTotalQuantity() <= 10? {'background-color': 'orange'} : {'background-color': 'blue'}" class="d-flex justify-content-center h4 total m-3">Ilość dodanych dań: {{getTotalQuantity()}}</span>
+    </ng-container>
     <div *ngIf="dishes.length != 0">
       <h3>Filtruj dania</h3>
       <app-filter-form></app-filter-form>
@@ -20,7 +22,7 @@
     </div>
     <ng-container *ngIf="dishes | dishesFilter : dishesService.filterTypes : dishesService.filterMinPrice : dishesService.filterMaxPrice : dishesService.filterCategories : dishesService.filterRating : test as dishList">
       <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let dish of dishList | slice : currPage * perPage : (currPage + 1) * perPage">
-        <app-dish-component [dish]="dish" (remove)="removeDish($event)"></app-dish-component>
+        <app-dish-component [dish]="dish" [cart]="cart" (remove)="removeDish($event)"></app-dish-component>
       </div>
       <div class="buttons" *ngIf="dishList.length != 0">
         <i *ngIf="currPage != 0" class="fas fa-chevron-left" (click)="previousPage()"></i>

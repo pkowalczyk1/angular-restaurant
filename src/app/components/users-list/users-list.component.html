@@ -1,1 +1,7 @@
-<p>users-list works!</p>
+<div class="container" *ngIf="authService.getUsers() | async as users">
+  <div class="row mt-3">
+    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 column" *ngFor="let user of users">
+      <app-user-component [user]="user"></app-user-component>
+    </div>
+  </div>
+</div>

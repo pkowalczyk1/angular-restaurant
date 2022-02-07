@@ -1,1 +1,46 @@
-<p>user-component works!</p>
+<div class="card h-100">
+  <div class="card-body">
+    <h5 class="card-title">{{user.displayName}}</h5>
+    <h6 class="card-subtitle mb-2">{{user.email}}</h6>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item role">
+      <div>
+        Administrator
+      </div>
+      <div>
+        <i *ngIf="user.roles.admin" class="fas fa-check"></i>
+        <i *ngIf="!user.roles.admin" class="fas fa-times"></i>
+        <a *ngIf="user.uid != authService.uid" (click)="authService.updateUserData(user, user.displayName, !user.roles.admin, user.roles.manager, user.roles.banned)">  Zmień rolę</a>
+      </div>
+    </li>
+    <li class="list-group-item role">
+      <div>
+        Manager
+      </div>
+      <div>
+        <i *ngIf="user.roles.manager" class="fas fa-check"></i>
+        <i *ngIf="!user.roles.manager" class="fas fa-times"></i>
+        <a *ngIf="user.uid != authService.uid" (click)="authService.updateUserData(user, user.displayName, user.roles.admin, !user.roles.manager, user.roles.banned)">  Zmień rolę</a>
+      </div>
+    </li>
+    <li class="list-group-item role">
+      <div>
+        Klient
+      </div>
+      <div>
+        <i class="fas fa-check"></i>
+      </div>
+    </li>
+    <li class="list-group-item role">
+      <div>
+        Zbanowany
+      </div>
+      <div>
+        <i *ngIf="user.roles.banned" class="fas fa-check"></i>
+        <i *ngIf="!user.roles.banned" class="fas fa-times"></i>
+        <a *ngIf="user.uid != authService.uid" (click)="authService.updateUserData(user, user.displayName, user.roles.admin, user.roles.manager, !user.roles.banned)">  Zmień rolę</a>
+      </div>
+    </li>
+  </ul>
+</div>

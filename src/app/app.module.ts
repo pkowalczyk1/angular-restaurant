@@ -23,10 +23,13 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import {AngularFireAuth, AngularFireAuthModule} from "@angular/fire/compat/auth";
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import {AuthGuard} from "./guard/auth.guard";
+import {AuthGuard} from "./guards/guard/auth.guard";
 import { DishUpdateComponent } from './components/dish-update/dish-update.component';
 import { AdminListComponent } from './components/admin-list/admin-list.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
+import { UserComponentComponent } from './components/user-component/user-component.component';
+import {AdminGuardGuard} from "./guards/admin/admin-guard.guard";
+import {ManagerGuardGuard} from "./guards/manager/manager-guard.guard";
 
 const routes: Routes = [
   {path: "home", component: HomePageComponent},
@@ -35,8 +38,9 @@ const routes: Routes = [
   {path: "details/:id", component: DishDetailsComponent, canActivate: [AuthGuard]},
   {path: "register", component: RegisterComponent},
   {path: "login", component: LoginComponent},
-  {path: "update/:id", component: DishUpdateComponent},
-  {path: "admin-list", component: AdminListComponent},
+  {path: "update/:id", component: DishUpdateComponent, canActivate: [AdminGuardGuard]},
+  {path: "admin-list", component: AdminListComponent, canActivate: [ManagerGuardGuard]},
+  {path: "users", component: UsersListComponent, canActivate: [AdminGuardGuard]},
   {path: "", redirectTo: "/home", pathMatch: "full"},
 ];
 
@@ -59,6 +63,7 @@ const routes: Routes = [
     DishUpdateComponent,
     AdminListComponent,
     UsersListComponent,
+    UserComponentComponent,
   ],
   imports: [
     BrowserModule,

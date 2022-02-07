@@ -16,12 +16,17 @@
         </li>
         <li class="nav-item">
           <ng-container *ngIf="(authService.currentUser | async) as user">
-            <a routerLink="/cart" routerLinkActive="active" class="nav-link">Koszyk</a>
+            <a *ngIf="!user.roles.manager && !user.roles.admin" routerLink="/cart" routerLinkActive="active" class="nav-link">Koszyk</a>
           </ng-container>
         </li>
         <li class="nav-item">
           <ng-container *ngIf="(authService.currentUser | async) as user">
-            <a *ngIf="user.roles.admin || user.roles.admin" routerLink="/admin-list" routerLinkActive="active" class="nav-link">Panel managera</a>
+            <a *ngIf="user.roles.admin || user.roles.manager" routerLink="/admin-list" routerLinkActive="active" class="nav-link">Panel managera</a>
+          </ng-container>
+        </li>
+        <li class="nav-item">
+          <ng-container *ngIf="(authService.currentUser | async) as user">
+            <a *ngIf="user.roles.admin" routerLink="/users" routerLinkActive="active" class="nav-link">Panel administratora</a>
           </ng-container>
         </li>
       </ul>

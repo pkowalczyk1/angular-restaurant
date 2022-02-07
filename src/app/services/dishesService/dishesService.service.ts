@@ -3,6 +3,7 @@ import { Dish } from '../../dish';
 import {Observable} from "rxjs";
 import {Review} from "../../review";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {Rating} from "../../rating";
 
 @Injectable({
   providedIn: 'root'
@@ -23,28 +24,20 @@ export class DishesServiceService {
 
   constructor(db: AngularFirestore) {
     this.db = db;
-    this.data = this.db.collection("dishes").valueChanges({idField: "id"});
+    this.data = this.db.collection("dishes2").valueChanges({idField: "id"});
   }
 
   getData(): Observable<Dish[]> {
     return this.data;
   }
 
-  increaseQuantity(i: number): void {
-    this.totalQuantity += i;
-  }
-
-  decreaseQuantity(i: number): void {
-    this.totalQuantity -= i;
-  }
-
   removeDish(dish: Dish): void {
     this.currQuantity.delete(dish.id);
-    this.db.collection("dishes").doc(String(dish.id)).delete();
+    this.db.collection("dishes2").doc(String(dish.id)).delete();
   }
 
   addDish(newDish: any): void {
-    this.db.collection("dishes").add({
+    this.db.collection("dishes2").add({
         name: newDish.name,
         cuisine: newDish.cuisine,
         type: newDish.type,
@@ -53,36 +46,13 @@ export class DishesServiceService {
         quantity: parseInt(newDish.quantity),
         description: newDish.description,
         price: parseFloat(newDish.price),
-        rating: 0,
+        rating: [],
         photos: newDish.photos.split(","),
         reviews: [],
       })
       .then((docRef: { id: string; }) => {
         this.currQuantity.set(docRef.id, 0)
       });
-  }
-
-  increaseCurrQuantity(dish: Dish): void {
-    if (this.currQuantity.get(dish.id) == undefined) {
-      this.currQuantity.set(dish.id, 1);
-    }
-    else {
-      // @ts-ignore
-      let tmp: number = this.currQuantity.get(dish.id);
-      this.currQuantity.set(dish.id, tmp - 1);
-    }
-  }
-
-  decreaseCurrQuantity(dish: Dish): void {
-    // @ts-ignore
-    let tmp: number = this.currQuantity.get(dish.id);
-    this.currQuantity.set(dish.id, tmp + 1);
-  }
-
-  setCurrQuantity(dish: Dish): void {
-    if (this.currQuantity.get(dish.id) == undefined) {
-      this.currQuantity.set(dish.id, 0);
-    }
   }
 
   changeCurrency(): void {
@@ -105,49 +75,20 @@ export class DishesServiceService {
   }
 
   updateDish(id: string, dish: Dish) {
-    this.db.collection("dishes").doc(id).update(dish);
-  }
-
-  getTotalQuantity(): number {
-    return this.totalQuantity;
-  }
-
-  getCurrQuantity(dish: Dish): number {
-    // @ts-ignore
-    return this.currQuantity.get(dish.id);
+    this.db.collection("dishes2").doc(id).update(dish);
   }
 
   getDish(id: string): Observable<Dish> {
-    return this.db.collection("dishes").doc(id).valueChanges();
+    return this.db.collection("dishes2").doc(id).valueChanges();
   }
 
   addReview(dish: Dish, newReview: any): void {
-    let review: Review = {
-      owner: newReview.nick,
-      title: newReview.title,
-      text: newReview.text,
-      date: newReview.date,
-    };
     // @ts-ignore
-    dish.reviews.push(review);
-    if (this.reviews.get(dish.id) == undefined) {
-      let newArr: Review[] = [];
-      newArr.push(review);
-      this.reviews.set(dish.id, newArr);
-    }
-    else {
-      // @ts-ignore
-      let arr: Review[] = this.reviews.get(dish.id);
-      arr.push(review);
-      this.reviews.set(dish.id, arr);
-    }
+    dish.reviews.push(newReview);
+    this.db.collection("dishes2").doc(dish.id).update({reviews: dish.reviews});
   }
 
-  getReviews(dish: Dish): Review[] {
-    if (this.reviews.get(dish.id) == undefined) {
-      return [];
-    }
-    // @ts-ignore
-    return this.reviews.get(dish.id)
+  rateDish(id: string, rating: Rating[]) {
+    this.db.collection("dishes2").doc(id).update({rating: rating});
   }
 }

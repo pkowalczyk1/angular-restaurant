@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {User} from "../../user";
+import {AuthServiceService} from "../../services/authService/auth-service.service";
 
 @Component({
   selector: 'app-user-component',
@@ -6,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-component.component.css']
 })
 export class UserComponentComponent implements OnInit {
+  @Input() user!: User;
 
-  constructor() { }
+  constructor(public authService: AuthServiceService) { }
 
   ngOnInit(): void {
   }

@@ -4,6 +4,8 @@ import {DishesServiceService} from "../../services/dishesService/dishesService.s
 import {CartServiceService} from "../../services/cartService/cart-service.service";
 import {Subscription} from "rxjs";
 import {AuthServiceService} from "../../services/authService/auth-service.service";
+import {Position} from "../../position";
+import {User} from "../../user";
 
 @Component({
   selector: 'app-dish-component',
@@ -12,6 +14,7 @@ import {AuthServiceService} from "../../services/authService/auth-service.servic
 })
 export class DishComponentComponent implements OnInit, OnDestroy {
   @Input() dish!: Dish;
+  @Input() cart!: Position[];
   @Output() remove: EventEmitter<Dish> = new EventEmitter<Dish>();
 
   maxPrice!: number;
@@ -22,7 +25,6 @@ export class DishComponentComponent implements OnInit, OnDestroy {
   constructor(public dishesService: DishesServiceService, private cartService: CartServiceService, public authService: AuthServiceService) { }
 
   ngOnInit(): void {
-    this.dishesService.setCurrQuantity(this.dish);
     this.subscription = this.dishesService.getData().subscribe(value => {
       this.minPrice = value
         .reduce((prev, current) => (prev.price < current.price) ? prev : current).price;
@@ -37,7 +39,6 @@ export class DishComponentComponent implements OnInit, OnDestroy {
   }
 
   removeDish(): void {
-    this.dishesService.decreaseQuantity(this.dishesService.getCurrQuantity(this.dish));
     this.cartService.removeDishFromCart(this.dish);
     this.remove.emit(this.dish);
   }

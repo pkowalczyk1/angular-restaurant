@@ -16,8 +16,22 @@ export class DishesFilterPipe implements PipeTransform {
     if (category && category.length != 0) {
       dishes = dishes.filter(dish => category.includes(dish.category));
     }
+
     // @ts-ignore
-    dishes = dishes.filter(dish => dish.price <= maxPrice && dish.price >= minPrice && rating.includes(dish.rating));
+    dishes = dishes.filter(dish => {
+      let ratingCount: number = dish.rating.reduce((a, b) => a + 1, 0);
+      let ratingMean: number;
+
+      if (ratingCount == 0) {
+        ratingMean = 0;
+      }
+      else {
+        ratingMean = Math.ceil(dish.rating.map(value => value.value).reduce((a, b) => a + b) / ratingCount);
+      }
+
+      // @ts-ignore
+      return dish.price <= maxPrice && dish.price >= minPrice && rating.includes(ratingMean);
+    });
     return dishes;
   }
 }

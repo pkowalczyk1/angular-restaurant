@@ -1,16 +1,19 @@
-<div class="container">
-  <h3>Koszyk</h3>
-  <div class="row justify-content-center">
-    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 text-center">
-      <h3 *ngIf="cartService.dishesInCart.length == 0">Koszyk jest pusty</h3>
-      <div *ngFor="let dish of cartService.dishesInCart" class="cart">
-        <div class="product">{{dish.name | uppercase}} x{{cartService.getQuantity(dish)}}</div>
-        <div class="price">{{cartService.totalPrices.get(dish.id)! * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
-      </div>
-      <div class="cart" *ngIf="cartService.dishesInCart.length != 0">
-        <div class="product h6">SUMA</div>
-        <div class="price">{{cartService.total * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
+<div class="container" *ngIf="dishes as dishes">
+  <ng-container *ngIf="cart as cart">
+    <h3>Koszyk</h3>
+    <div class="row justify-content-center">
+      <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 text-center">
+        <h3 *ngIf="cart.length == 0">Koszyk jest pusty</h3>
+        <div *ngFor="let position of cart" class="cart">
+          <div class="product">{{getDish(position.dishId).name | uppercase}} x{{position.quantity}}</div>
+          <div class="price">{{getDish(position.dishId).price * position.quantity * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
+        </div>
+        <div class="cart" *ngIf="cart.length != 0">
+          <div class="product h6">SUMA</div>
+          <div class="price">{{countCart() * dishesService.currencyRatio | number : '1.2-2'}} <i *ngIf="dishesService.currency === 'dollar'" class="fas fa-dollar-sign"></i><i *ngIf="dishesService.currency === 'euro'" class="fas fa-euro-sign"></i></div>
+        </div>
+        <button *ngIf="cart.length != 0" class="btn btn-primary" (click)="cartService.submitCart(cart, history)">Zamów</button>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>

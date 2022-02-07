@@ -15,7 +15,13 @@ export class ManagerGuardGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.auth.currentUser.pipe(
       take(1),
-      map(user => !!user && !!user.roles.manager)
+      map(user => {
+        if (user == null || user.roles.manager == false) {
+          this.router.navigate(['list']);
+          return false;
+        }
+        return true;
+      })
     );
   }
 }
